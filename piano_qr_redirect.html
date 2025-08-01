@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piano Serial Number Redirect</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 3em;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 1em;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 1em 2em;
+      margin: 1em;
+      border: none;
+      border-radius: 10px;
+      background-color: #0078d4;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Digital Piano Serial Check</h1>
+  <p id="status"></p>
+  <div id="buttons" style="display:none;">
+    <button onclick="goToForm('checkout')">Check Out</button>
+    <button onclick="goToForm('return')">Return</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const serial = urlParams.get('serial');
+
+    const statusText = document.getElementById('status');
+    const buttonContainer = document.getElementById('buttons');
+
+    if (!serial) {
+      statusText.innerHTML = '<span class="error">Error: No serial number found in the URL.</span>';
+    } else {
+      statusText.innerText = `Detected Piano Serial: ${serial}`;
+      buttonContainer.style.display = 'block';
+    }
+
+    function goToForm(action) {
+      let baseUrl = '';
+      if (action === 'checkout') {
+        baseUrl = 'https://forms.monday.com/forms/db14c6a4db527add7b18d5e48fd00ea4?r=use1&serial=';
+      } else if (action === 'return') {
+        baseUrl = 'https://forms.monday.com/forms/2289eae4ef74123403660825436e4cf2?r=use1&serial=';
+      }
+      window.location.href = `${baseUrl}${encodeURIComponent(serial)}`;
+    }
+  </script>
+</body>
+</html>
